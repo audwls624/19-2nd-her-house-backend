@@ -11,7 +11,6 @@ class Product(models.Model):
     category           = models.ForeignKey('Category', on_delete=models.SET_NULL, null=True)
     name               = models.CharField(max_length=45)
     price              = models.DecimalField(max_digits=10, decimal_places=2)
-    star_rating        = models.DecimalField(max_digits=3, decimal_places=2)
     discount_rate      = models.DecimalField(max_digits=3, decimal_places=2)
     is_freedelivery    = models.BooleanField(default=False)
     delivery_fee       = models.DecimalField(max_digits=5, decimal_places=2)

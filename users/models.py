@@ -1,11 +1,11 @@
 from django.db import models
 
 class User(models.Model):
-    name      = models.CharField(max_length=20)
-    nickname  = models.CharField(max_length=20)
-    password  = models.CharField(max_length=300)
-    email     = models.EmailField(max_length=100)
-    order     = models.ManyToManyField('orders.Order',through= 'orders.Cart', related_name='user_order')
+    name         = models.CharField(max_length=20)
+    phone_number = models.CharField(max_length=20)
+    password     = models.CharField(max_length=300)
+    email        = models.EmailField(max_length=100)
+    order        = models.ManyToManyField('orders.Order',through= 'orders.Cart', related_name='user_order')
 
     class Meta:
         db_table = 'users'
