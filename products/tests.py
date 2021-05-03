@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from products.models import Category, Product, Review
+from products.models import Category, Product, Review, Size, Color, ProductOption, ProductImage
 from users.models import User
 
 import json
@@ -116,3 +116,63 @@ class ProductListView(TestCase):
         response = client.get('/store?ordering=33')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.json(),{'MESSAGE': 'INVALID_ORDERING_METHOD'})
+
+class ProductDetailViewTest(TestCase):
+    
+    @classmethod
+    def setUpTestData(cls):
+        a  = Category.objects.create(id=1,name='침실/가구',image_url='https://ima.com')
+        p1 = Product.objects.create(id=1,name='가구1',price=1100,discount_rate=0.1,is_freedelivery=True,
+            delivery_fee=500,delivery_method=True,thumbnail_image='https://ima.com',category=a,
+            manufacturer='다이소',description='aaaa',description_image='https://ima.com')
+        s1 = Size.objects.create(name='small')
+        s2 = Size.objects.create(name='large')
+        c1 = Color.objects.create(name='red')
+        c2 = Color.objects.create(name='blue')
+        ProductOption.objects.create(product=p1,size=s1,color=c1)
+        ProductOption.objects.create(product=p1,size=s2,color=c2)
+        ProductImage.objects.create(product=p1,image_url='https://ima.com')
+        ProductImage.objects.create(product=p1,image_url='https://im.com')
+        u1 = User.objects.create(id=1,name='1',email='fda@naver.com',password='fjd',phone_number='010-1234-4567')
+        u2 = User.objects.create(id=2,name='2',email='fda@naver.com',password='fkf',phone_number='010-1234-4567')
+        u3 = User.objects.create(id=3,name='3',email='fda@naver.com',password='lkf',phone_number='010-1234-4567')
+        Review.objects.create(user=u1,product=p1,star_rating=5,image_url='https://i.com',text='fd')
+        Review.objects.create(user=u2,product=p1,star_rating=1,image_url='https://im.com',text='fd')
+        Review.objects.create(user=u3,product=p1,star_rating=1,image_url='https://imag',text='fd')
+
+
+    def tearDown(self):
+        Category.objects.all().delete()
+        Product.objects.all().delete()
+        Size.objects.all().delete()
+        Color.objects.all().delete()
+        Review.objects.all().delete()
+        User.objects.all().delete()
+    
+    def test_product_detail_view(self):
+        client=Client()
+        response = client.get('/store/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {
+            'MESSAGE': 'SUCCESS',
+            'product_info': {
+                'category': '침실/가구',
+                'manufacturer': '다이소',
+                'name': '가구1',
+                'star_rating': '2.333333',
+                'review_number': 3,
+                'discout_rate': '0.10',
+                'delivery_fee': '500.00',
+                'delivery_method': True,
+                'size': ['small', 'large'],
+                'color': ['red', 'blue'],
+                'thumbnail_image': 'https://ima.com',
+                'description': 'aaaa',
+                'description_image': 'https://ima.com',
+                'product_images': ['https://ima.com', 'https://im.com']}})
+        
+    def test_invalid_product_id(self):
+        client=Client()
+        response = client.get('/store/4')
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {'MESSAGE': 'PRODUCT_ID_DOES_NOT_EXISTS'})
