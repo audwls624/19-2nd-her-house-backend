@@ -85,6 +85,7 @@ class CompanyMainViewTest(TestCase):
         self.assertEqual(response.json(),
         {"MESSAGE": [
             {
+            "id"             : 1,
             "name"           : "위코드",
             "address"        : '서울특별시 강남구 어딘가',
             "star_rating"    : "4.70",

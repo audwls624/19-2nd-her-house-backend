@@ -26,6 +26,7 @@ class CompanyMainView(View):
         user_location = (user_lat, user_lng)
         
         company = [{
+            'id'               : company.id,
             'name'             : company.name,
             'address'          : company.address,
             'star_rating'      : company.star_rating,
