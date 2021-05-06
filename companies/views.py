@@ -33,6 +33,8 @@ class CompanyMainView(View):
             'upper_price'      : company.upper_price,
             'lower_price'      : company.lower_price,
             'distance'         : round(haversine((company.latitude, company.longtitude), user_location), 1),
+            'latitude'         : company.latitude,
+            'longtitude'        : company.longtitude,
             'contract_number'  : company.contract_number,
             'thumbnail'        : company.thumbnail_image,
             'images'           : [i.image_url for i in company.companyimage_set.all()]}
