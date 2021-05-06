@@ -42,7 +42,7 @@ class CompanyMainViewTest(TestCase):
         CompanyImage.objects.all().delete()
 
     @patch('companies.views.requests')
-    def test_company_fiter_get_success(self, mock_kakao_requests):
+    def test_company_filter_get_success(self, mock_kakao_requests):
         client = Client()
         
         class MockedResponse:
@@ -92,6 +92,8 @@ class CompanyMainViewTest(TestCase):
             "upper_price"    : "17000000.00",
             "lower_price"    : "12000000.00",
             "distance"       : 181.2,
+            "latitude"       : "39.12345123499999743899",
+            "longtitude"     : "127.12397914700000001176",
             "contract_number": 17,
             "thumbnail"      : "내가 섬네일 이미지가 어디있습니까",
             "images"         : 
