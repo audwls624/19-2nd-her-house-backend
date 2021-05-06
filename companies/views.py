@@ -1,5 +1,6 @@
 import json
 import requests
+import math
 
 from haversine    import haversine
 from urllib.parse import urlparse
@@ -40,6 +41,11 @@ class CompanyMainView(View):
             'images'           : [i.image_url for i in company.companyimage_set.all()]}
             for company in Company.objects.all().prefetch_related('companyimage_set')]
         
-        company = [x for x in company if x['distance'] <= float(radius)]
+        company   = [x for x in company if x['distance'] <= float(radius)]
+        max_page  = math.ceil(len(company) / 9)
+        page      = int(request.GET.get("page", 1))
+        page_size = 12
+        limit     = int(page_size * page)
+        offset    = int(limit - page_size)
 
-        return JsonResponse({'MESSAGE':company}, status=200)
+        return JsonResponse({'MESSAGE':company[offset:limit], 'max_page':max_page}, status=200)
