@@ -3,7 +3,7 @@ house of the day Clone Project
 
 ## ⚡️ Backend
 - [양명진](https://velog.io/@adsf25)
-- [김영훈]
+- 김영훈
 - [함경재](https://github.com/hiyee-gj)
 
 ## 🐝 Period
